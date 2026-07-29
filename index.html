@@ -603,31 +603,790 @@ box-shadow:0 0 25px cyan;
 
 </style>
 
+<!-- ========================= -->
+<!-- SHOPPING CART DRAWER -->
+<!-- ========================= -->
+
+<div id="cartDrawer" class="cart-drawer">
+
+    <div class="cart-header">
+
+        <h2>🛒 Shopping Cart</h2>
+
+        <button id="closeCart">&times;</button>
+
+    </div>
+
+    <div id="cartItems"></div>
+
+    <div class="cart-footer">
+
+        <h3>Total: ₹<span id="cartTotal">0</span></h3>
+
+        <button class="checkout-btn">
+            Checkout
+        </button>
+
+    </div>
+
+</div>
+
+<style>
+
+.cart-drawer{
+
+position:fixed;
+
+top:0;
+
+right:-400px;
+
+width:350px;
+
+height:100%;
+
+background:#111;
+
+color:white;
+
+padding:20px;
+
+transition:.4s;
+
+z-index:9999;
+
+overflow-y:auto;
+
+box-shadow:-8px 0 30px rgba(0,0,0,.4);
+
+}
+
+.cart-drawer.open{
+
+right:0;
+
+}
+
+.cart-header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:20px;
+
+}
+
+.cart-header button{
+
+background:none;
+
+border:none;
+
+color:white;
+
+font-size:30px;
+
+cursor:pointer;
+
+}
+
+.cart-item{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin:18px 0;
+
+padding-bottom:12px;
+
+border-bottom:1px solid rgba(255,255,255,.1);
+
+}
+
+.cart-info h4{
+
+font-size:15px;
+
+}
+
+.cart-info p{
+
+color:#00E5FF;
+
+margin-top:6px;
+
+}
+
+.qty{
+
+display:flex;
+
+align-items:center;
+
+gap:8px;
+
+margin-top:8px;
+
+}
+
+.qty button{
+
+width:28px;
+
+height:28px;
+
+border:none;
+
+border-radius:50%;
+
+cursor:pointer;
+
+background:#00E5FF;
+
+color:#111;
+
+font-weight:bold;
+
+}
+
+.remove-btn{
+
+margin-top:8px;
+
+background:#ff2d75;
+
+color:white;
+
+border:none;
+
+padding:6px 10px;
+
+border-radius:8px;
+
+cursor:pointer;
+
+}
+
+.cart-footer{
+
+margin-top:30px;
+
+}
+
+.checkout-btn{
+
+width:100%;
+
+padding:14px;
+
+background:linear-gradient(90deg,#00E5FF,#7B61FF);
+
+border:none;
+
+color:white;
+
+border-radius:30px;
+
+font-size:16px;
+
+cursor:pointer;
+
+margin-top:15px;
+
+}
+
+</style>
+
 <script>
 
-const buttons=document.querySelectorAll(".buy-btn");
+const cartDrawer=document.getElementById("cartDrawer");
 
-buttons.forEach(button=>{
+const cartBtn=document.querySelector(".cart-btn");
 
-button.addEventListener("click",()=>{
+const closeCart=document.getElementById("closeCart");
 
-button.innerHTML="✓ Added";
+const cartItems=document.getElementById("cartItems");
 
-button.style.background="#14b814";
+const total=document.getElementById("cartTotal");
+
+let cart=[];
+
+cartBtn.onclick=()=>{
+
+cartDrawer.classList.add("open");
+
+}
+
+closeCart.onclick=()=>{
+
+cartDrawer.classList.remove("open");
+
+}
+
+const products=[
+
+{
+name:"Naruto Premium Hoodie",
+price:1999
+},
+
+{
+name:"One Piece Figure",
+price:3499
+},
+
+{
+name:"Gojo Oversized T-Shirt",
+price:999
+},
+
+{
+name:"Anime Gaming Headset",
+price:4299
+}
+
+];
+
+document.querySelectorAll(".buy-btn").forEach((button,index)=>{
+
+button.onclick=()=>{
+
+cart.push({
+
+...products[index],
+qty:1
+
+});
+
+renderCart();
+
+cartDrawer.classList.add("open");
+
+}
+
+});
+
+function renderCart(){
+
+cartItems.innerHTML="";
+
+let grand=0;
+
+cart.forEach((item,index)=>{
+
+grand+=item.price*item.qty;
+
+cartItems.innerHTML+=`
+
+<div class="cart-item">
+
+<div class="cart-info">
+
+<h4>${item.name}</h4>
+
+<p>₹${item.price}</p>
+
+<div class="qty">
+
+<button onclick="changeQty(${index},-1)">-</button>
+
+<span>${item.qty}</span>
+
+<button onclick="changeQty(${index},1)">+</button>
+
+</div>
+
+<button class="remove-btn" onclick="removeItem(${index})">
+
+Remove
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+total.textContent=grand;
+
+}
+
+function changeQty(index,value){
+
+cart[index].qty+=value;
+
+if(cart[index].qty<=0){
+
+cart.splice(index,1);
+
+}
+
+renderCart();
+
+}
+
+function removeItem(index){
+
+cart.splice(index,1);
+
+renderCart();
+
+}
+
+</script>
+
+<!-- ========================= -->
+<!-- SEARCH + FILTER + WISHLIST -->
+<!-- ========================= -->
+
+<section class="shop-tools">
+
+    <h2 class="section-title">🛍 Explore Collection</h2>
+
+    <div class="toolbar">
+
+        <input
+            type="text"
+            id="searchBox"
+            placeholder="Search products..."
+        >
+
+        <select id="categoryFilter">
+
+            <option value="all">All Categories</option>
+
+            <option value="Clothing">Clothing</option>
+
+            <option value="Figures">Figures</option>
+
+            <option value="Accessories">Accessories</option>
+
+        </select>
+
+    </div>
+
+</section>
+
+<style>
+
+.shop-tools{
+
+padding:70px 8%;
+
+}
+
+.toolbar{
+
+display:flex;
+
+gap:20px;
+
+flex-wrap:wrap;
+
+justify-content:center;
+
+margin-top:30px;
+
+}
+
+.toolbar input,
+.toolbar select{
+
+padding:14px 18px;
+
+width:280px;
+
+border:none;
+
+border-radius:40px;
+
+background:rgba(255,255,255,.08);
+
+color:white;
+
+backdrop-filter:blur(12px);
+
+outline:none;
+
+}
+
+.toolbar input::placeholder{
+
+color:#cccccc;
+
+}
+
+.favorite{
+
+position:absolute;
+
+top:15px;
+
+right:15px;
+
+font-size:24px;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.favorite.active{
+
+color:#ff2d75;
+
+transform:scale(1.2);
+
+}
+
+.product-card{
+
+position:relative;
+
+}
+
+.product-card:hover{
+
+transform:translateY(-12px) scale(1.03);
+
+transition:.4s;
+
+}
+
+</style>
+
+<script>
+
+const names=[
+"Naruto Premium Hoodie",
+"One Piece Figure",
+"Gojo Oversized T-Shirt",
+"Anime Gaming Headset"
+];
+
+const categories=[
+"Clothing",
+"Figures",
+"Clothing",
+"Accessories"
+];
+
+document.querySelectorAll(".product-card").forEach((card,index)=>{
+
+const heart=document.createElement("div");
+
+heart.className="favorite";
+
+heart.innerHTML="🤍";
+
+card.appendChild(heart);
+
+heart.onclick=()=>{
+
+heart.classList.toggle("active");
+
+heart.innerHTML=
+
+heart.classList.contains("active")
+
+?"❤️"
+
+:"🤍";
+
+};
+
+});
+
+const search=document.getElementById("searchBox");
+
+const filter=document.getElementById("categoryFilter");
+
+function updateProducts(){
+
+document.querySelectorAll(".product-card")
+
+.forEach((card,index)=>{
+
+const text=search.value.toLowerCase();
+
+const matchName=
+
+names[index].toLowerCase().includes(text);
+
+const matchCategory=
+
+filter.value==="all"
+
+||
+
+filter.value===categories[index];
+
+card.style.display=
+
+(matchName && matchCategory)
+
+?"block"
+
+:"none";
+
+});
+
+}
+
+search.addEventListener("keyup",updateProducts);
+
+filter.addEventListener("change",updateProducts);
+
+</script>
+
+<!-- ========================= -->
+<!-- PREMIUM LOADER -->
+<!-- ========================= -->
+
+<div id="loader">
+
+    <h1>THE ANIME STORE</h1>
+
+    <div class="loader-ring"></div>
+
+</div>
+
+<style>
+
+#loader{
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+width:100%;
+
+height:100%;
+
+background:#050510;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+align-items:center;
+
+z-index:999999;
+
+transition:1s;
+
+}
+
+#loader h1{
+
+font-size:42px;
+
+background:linear-gradient(90deg,#00E5FF,#7B61FF,#FF2D75);
+
+-webkit-background-clip:text;
+
+-webkit-text-fill-color:transparent;
+
+margin-bottom:30px;
+
+}
+
+.loader-ring{
+
+width:70px;
+
+height:70px;
+
+border:6px solid rgba(255,255,255,.15);
+
+border-top:6px solid #00E5FF;
+
+border-radius:50%;
+
+animation:spin 1s linear infinite;
+
+}
+
+@keyframes spin{
+
+100%{
+
+transform:rotate(360deg);
+
+}
+
+}
+
+.particle{
+
+position:fixed;
+
+width:6px;
+
+height:6px;
+
+background:#00E5FF;
+
+border-radius:50%;
+
+opacity:.35;
+
+pointer-events:none;
+
+animation:floatParticle linear infinite;
+
+}
+
+@keyframes floatParticle{
+
+from{
+
+transform:translateY(100vh);
+
+}
+
+to{
+
+transform:translateY(-120vh);
+
+}
+
+}
+
+.reveal{
+
+opacity:0;
+
+transform:translateY(60px);
+
+transition:1s;
+
+}
+
+.reveal.active{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+</style>
+
+<script>
+
+/* Loader */
+
+window.addEventListener("load",()=>{
 
 setTimeout(()=>{
 
-button.innerHTML="Add to Cart";
+document.getElementById("loader").style.opacity="0";
 
-button.style.background="linear-gradient(90deg,#00E5FF,#7B61FF)";
+setTimeout(()=>{
 
-},1500);
+document.getElementById("loader").style.display="none";
+
+},1000);
+
+},1800);
+
+});
+
+
+/* Floating particles */
+
+for(let i=0;i<40;i++){
+
+const p=document.createElement("div");
+
+p.className="particle";
+
+p.style.left=Math.random()*100+"vw";
+
+p.style.animationDuration=(8+Math.random()*10)+"s";
+
+p.style.animationDelay=Math.random()*5+"s";
+
+document.body.appendChild(p);
+
+}
+
+
+/* Reveal Animation */
+
+const revealElements=document.querySelectorAll(
+
+".card,.product-card,.featured,.shop-tools"
+
+);
+
+revealElements.forEach(el=>el.classList.add("reveal"));
+
+window.addEventListener("scroll",()=>{
+
+document.querySelectorAll(".reveal").forEach(el=>{
+
+const top=el.getBoundingClientRect().top;
+
+if(top<window.innerHeight-100){
+
+el.classList.add("active");
+
+}
 
 });
 
 });
+
+
+/* Auto Product Slider */
+
+const slider=document.querySelector(".product-slider");
+
+let direction=1;
+
+setInterval(()=>{
+
+if(!slider) return;
+
+slider.scrollLeft+=300*direction;
+
+if(
+
+slider.scrollLeft+slider.clientWidth>=slider.scrollWidth
+
+){
+
+direction=-1;
+
+}
+
+if(slider.scrollLeft<=0){
+
+direction=1;
+
+}
+
+},2500);
 
 </script>
+
+
 
 </body>
 </html>
