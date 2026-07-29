@@ -398,6 +398,199 @@ transition:.5s;
 
 }
 
+.modal{
+
+display:none;
+
+position:fixed;
+
+inset:0;
+
+background:rgba(0,0,0,.75);
+
+justify-content:center;
+
+align-items:center;
+
+z-index:9999;
+
+}
+
+.modal-content{
+
+width:90%;
+
+max-width:420px;
+
+background:#111;
+
+padding:25px;
+
+border-radius:20px;
+
+text-align:center;
+
+}
+
+.modal-content img{
+
+width:100%;
+
+border-radius:15px;
+
+margin-bottom:15px;
+
+}
+
+.close-modal{
+
+float:right;
+
+font-size:30px;
+
+cursor:pointer;
+
+}
+
+#modalCart{
+
+margin-top:20px;
+
+width:100%;
+
+padding:14px;
+
+border:none;
+
+border-radius:30px;
+
+background:linear-gradient(90deg,#00E5FF,#7B61FF);
+
+color:white;
+
+cursor:pointer;
+
+}
+
+#toast{
+
+position:fixed;
+
+bottom:25px;
+
+left:50%;
+
+transform:translateX(-50%);
+
+background:#00b894;
+
+padding:15px 25px;
+
+border-radius:30px;
+
+display:none;
+
+z-index:10000;
+
+font-weight:bold;
+
+}
+
+/* Pagination */
+
+.pagination{
+
+display:flex;
+
+justify-content:center;
+
+gap:15px;
+
+padding:40px;
+
+}
+
+.page{
+
+width:45px;
+
+height:45px;
+
+border:none;
+
+border-radius:50%;
+
+cursor:pointer;
+
+background:rgba(255,255,255,.08);
+
+color:white;
+
+transition:.3s;
+
+}
+
+.page:hover,
+.page.active{
+
+background:linear-gradient(90deg,#00E5FF,#7B61FF);
+
+}
+
+/* Review Section */
+
+.review-box{
+
+margin:80px auto;
+
+width:90%;
+
+max-width:1200px;
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+
+gap:25px;
+
+}
+
+.review{
+
+background:rgba(255,255,255,.05);
+
+padding:25px;
+
+border-radius:20px;
+
+backdrop-filter:blur(20px);
+
+transition:.3s;
+
+}
+
+.review:hover{
+
+transform:translateY(-8px);
+
+box-shadow:0 0 25px rgba(0,229,255,.25);
+
+}
+
+.review h3{
+
+margin-bottom:10px;
+
+}
+
+.review p{
+
+color:#cccccc;
+
+line-height:1.7;
+
+}
+
 </style>
 
 </head>
@@ -486,6 +679,56 @@ id="search">
 
 <section class="products">
 
+<div class="pagination">
+
+    <button class="page active">1</button>
+
+    <button class="page">2</button>
+
+    <button class="page">3</button>
+
+</div>
+
+<section class="review-box">
+
+    <div class="review">
+
+        <h3>⭐⭐⭐⭐⭐</h3>
+
+        <p>
+        Amazing quality hoodie! The fabric feels premium.
+        </p>
+
+        <strong>- Rahul</strong>
+
+    </div>
+
+    <div class="review">
+
+        <h3>⭐⭐⭐⭐⭐</h3>
+
+        <p>
+        The anime figures arrived safely. Packaging was excellent.
+        </p>
+
+        <strong>- Priya</strong>
+
+    </div>
+
+    <div class="review">
+
+        <h3>⭐⭐⭐⭐☆</h3>
+
+        <p>
+        Fast delivery and good customer support.
+        </p>
+
+        <strong>- Aman</strong>
+
+    </div>
+
+</section>
+
 <div class="product" data-category="Clothing" data-price="1999">
 
 <span class="tag">NEW</span>
@@ -516,10 +759,8 @@ Add Cart
 
 </button>
 
-<button class="buy">
-
-Buy Now
-
+<button class="buy quick-view">
+Quick View
 </button>
 
 </div>
@@ -558,10 +799,8 @@ Add Cart
 
 </button>
 
-<button class="buy">
-
-Buy Now
-
+<button class="buy quick-view">
+Quick View
 </button>
 
 </div>
@@ -600,10 +839,8 @@ Add Cart
 
 </button>
 
-<button class="buy">
-
-Buy Now
-
+<button class="buy quick-view">
+Quick View
 </button>
 
 </div>
@@ -642,10 +879,8 @@ Add Cart
 
 </button>
 
-<button class="buy">
-
-Buy Now
-
+<button class="buy quick-view">
+Quick View
 </button>
 
 </div>
@@ -793,6 +1028,168 @@ button.style.background="linear-gradient(90deg,#00E5FF,#7B61FF)";
 },1500);
 
 };
+
+});
+
+</script>
+
+<!-- Quick View Modal -->
+
+<div id="productModal" class="modal">
+
+  <div class="modal-content">
+
+    <span class="close-modal">&times;</span>
+
+    <img id="modalImage" src="" alt="Product">
+
+    <h2 id="modalTitle"></h2>
+
+    <p id="modalPrice"></p>
+
+    <p>
+      Premium anime merchandise made with high-quality materials.
+      Comfortable, stylish, and perfect for every anime fan.
+    </p>
+
+    <button id="modalCart">
+      Add to Cart
+    </button>
+
+  </div>
+
+</div>
+
+<div id="toast">
+Item added to cart ✔
+</div>
+<script>
+
+const modal=document.getElementById("productModal");
+
+const modalImage=document.getElementById("modalImage");
+
+const modalTitle=document.getElementById("modalTitle");
+
+const modalPrice=document.getElementById("modalPrice");
+
+const toast=document.getElementById("toast");
+
+let currentProduct={};
+
+document.querySelectorAll(".quick-view").forEach(btn=>{
+
+btn.onclick=function(){
+
+const card=this.closest(".product");
+
+currentProduct={
+
+title:card.querySelector("h3").innerText,
+
+price:card.querySelector(".price").innerText,
+
+image:card.querySelector("img").src
+
+};
+
+modalImage.src=currentProduct.image;
+
+modalTitle.innerText=currentProduct.title;
+
+modalPrice.innerText=currentProduct.price;
+
+modal.style.display="flex";
+
+};
+
+});
+
+document.querySelector(".close-modal").onclick=function(){
+
+modal.style.display="none";
+
+};
+
+window.onclick=function(e){
+
+if(e.target===modal){
+
+modal.style.display="none";
+
+}
+
+};
+
+document.getElementById("modalCart").onclick=function(){
+
+const cart=
+
+JSON.parse(localStorage.getItem("animeCart"))||[];
+
+cart.push(currentProduct);
+
+localStorage.setItem(
+
+"animeCart",
+
+JSON.stringify(cart)
+
+);
+
+modal.style.display="none";
+
+toast.style.display="block";
+
+setTimeout(()=>{
+
+toast.style.display="none";
+
+},2000);
+
+};
+
+</script>
+
+<script>
+
+/* Pagination Animation */
+
+document.querySelectorAll(".page")
+
+.forEach(btn=>{
+
+btn.onclick=()=>{
+
+document.querySelectorAll(".page")
+
+.forEach(b=>b.classList.remove("active"));
+
+btn.classList.add("active");
+
+};
+
+});
+
+/* Fade Products */
+
+const cards=document.querySelectorAll(".product");
+
+cards.forEach((card,index)=>{
+
+card.style.opacity="0";
+
+card.style.transform="translateY(60px)";
+
+setTimeout(()=>{
+
+card.style.transition=".6s";
+
+card.style.opacity="1";
+
+card.style.transform="translateY(0)";
+
+},index*150);
 
 });
 
