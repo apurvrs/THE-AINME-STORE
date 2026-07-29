@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>THE ANIME STORE | Product</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+
+background:#050510;
+color:white;
+
+}
+
+body::before{
+
+content:"";
+
+position:fixed;
+
+width:500px;
+height:500px;
+
+background:#00E5FF;
+
+filter:blur(180px);
+
+opacity:.12;
+
+top:-150px;
+left:-150px;
+
+z-index:-1;
+
+}
+
+body::after{
+
+content:"";
+
+position:fixed;
+
+width:500px;
+height:500px;
+
+background:#7B61FF;
+
+filter:blur(180px);
+
+opacity:.12;
+
+bottom:-150px;
+right:-150px;
+
+z-index:-1;
+
+}
+
+nav{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:20px 8%;
+
+background:rgba(255,255,255,.05);
+
+backdrop-filter:blur(18px);
+
+border-bottom:1px solid rgba(255,255,255,.08);
+
+}
+
+.logo{
+
+font-size:30px;
+
+font-weight:800;
+
+background:linear-gradient(90deg,#00E5FF,#7B61FF,#FF2D75);
+
+-webkit-background-clip:text;
+
+-webkit-text-fill-color:transparent;
+
+}
+
+nav a{
+
+color:white;
+
+text-decoration:none;
+
+margin-left:25px;
+
+}
+
+.container{
+
+width:90%;
+
+max-width:1300px;
+
+margin:60px auto;
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:50px;
+
+}
+
+.gallery img{
+
+width:100%;
+
+border-radius:20px;
+
+}
+
+.thumbnails{
+
+display:flex;
+
+gap:15px;
+
+margin-top:20px;
+
+}
+
+.thumbnails img{
+
+width:90px;
+
+height:90px;
+
+object-fit:cover;
+
+border-radius:12px;
+
+cursor:pointer;
+
+border:2px solid transparent;
+
+transition:.3s;
+
+}
+
+.thumbnails img:hover{
+
+border-color:#00E5FF;
+
+}
+
+.details h1{
+
+font-size:44px;
+
+margin-bottom:15px;
+
+}
+
+.rating{
+
+color:#FFD700;
+
+font-size:20px;
+
+margin-bottom:15px;
+
+}
+
+.price{
+
+font-size:36px;
+
+font-weight:700;
+
+color:#00E5FF;
+
+margin-bottom:20px;
+
+}
+
+.desc{
+
+color:#cccccc;
+
+line-height:1.8;
+
+margin-bottom:30px;
+
+}
+
+.qty{
+
+display:flex;
+
+align-items:center;
+
+gap:15px;
+
+margin-bottom:25px;
+
+}
+
+.qty button{
+
+width:40px;
+
+height:40px;
+
+border:none;
+
+border-radius:50%;
+
+background:#00E5FF;
+
+cursor:pointer;
+
+font-size:20px;
+
+}
+
+#qty{
+
+font-size:22px;
+
+}
+
+.buttons{
+
+display:flex;
+
+gap:20px;
+
+flex-wrap:wrap;
+
+}
+
+.buttons button{
+
+padding:16px 30px;
+
+border:none;
+
+border-radius:40px;
+
+cursor:pointer;
+
+font-size:16px;
+
+font-weight:600;
+
+}
+
+.cart{
+
+background:linear-gradient(90deg,#00E5FF,#7B61FF);
+
+color:white;
+
+}
+
+.buy{
+
+background:white;
+
+color:#111;
+
+}
+
+@media(max-width:900px){
+
+.container{
+
+grid-template-columns:1fr;
+
+}
+
+.details h1{
+
+font-size:34px;
+
+}
+
+}
+
+.thumb{
+
+transition:.3s;
+
+}
+
+.active-thumb{
+
+border:2px solid #00E5FF !important;
+
+}
+
+.gallery{
+
+overflow:hidden;
+
+border-radius:20px;
+
+}
+
+#mainImage{
+
+transition:.4s;
+
+cursor:zoom-in;
+
+}
+
+#mainImage:hover{
+
+transform:scale(1.08);
+
+}
+
+.extra-info{
+
+margin-top:40px;
+
+}
+
+.specs,
+.shipping{
+
+margin-top:30px;
+
+padding:20px;
+
+background:rgba(255,255,255,.05);
+
+border-radius:20px;
+
+}
+
+.specs ul{
+
+margin-top:15px;
+
+padding-left:20px;
+
+line-height:2;
+
+color:#dddddd;
+
+}
+
+#wishlistBtn{
+
+margin-top:20px;
+
+padding:14px 30px;
+
+border:none;
+
+border-radius:40px;
+
+background:#ff2d75;
+
+color:white;
+
+cursor:pointer;
+
+font-size:16px;
+
+transition:.3s;
+
+}
+
+#wishlistBtn:hover{
+
+transform:scale(1.05);
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav>
+
+<div class="logo">
+
+THE ANIME STORE
+
+</div>
+
+<div>
+
+<a href="index.html">Home</a>
+
+<a href="shop.html">Shop</a>
+
+<a href="cart.html">Cart</a>
+
+</div>
+
+</nav>
+
+<div class="container">
+
+<div class="gallery">
+
+<img
+
+id="mainImage"
+
+src="https://picsum.photos/600/700?random=20"
+
+>
+
+<div class="thumbnails">
+
+<img class="thumb active-thumb" src="https://picsum.photos/200?random=20">
+
+<img class="thumb" src="https://picsum.photos/200?random=21">
+
+<img class="thumb" src="https://picsum.photos/200?random=22">
+
+<img class="thumb" src="https://picsum.photos/200?random=23">
+
+</div>
+
+</div>
+
+<div class="details">
+
+<h1>
+
+Naruto Premium Hoodie
+
+</h1>
+
+<div class="rating">
+
+⭐⭐⭐⭐⭐ (245 Reviews)
+
+</div>
+
+<div class="price">
+
+₹1,999
+
+</div>
+
+<p class="desc">
+
+Premium oversized anime hoodie made from soft cotton fabric.
+Perfect for everyday wear with high-quality printing and a comfortable fit.
+
+</p>
+
+<div class="qty">
+
+<button id="minus">−</button>
+
+<span id="qty">1</span>
+
+<button id="plus">+</button>
+
+</div>
+
+<div class="buttons">
+
+<button class="cart">
+
+🛒 Add to Cart
+
+</button>
+
+<button class="buy">
+
+⚡ Buy Now
+
+</button>
+
+</div>
+<div class="extra-info">
+
+<div class="wishlist-box">
+
+<button id="wishlistBtn">
+
+🤍 Add to Wishlist
+
+</button>
+
+</div>
+
+<div class="specs">
+
+<h2>Product Specifications</h2>
+
+<ul>
+
+<li>✔ 100% Premium Cotton</li>
+
+<li>✔ Oversized Fit</li>
+
+<li>✔ HD Printed Artwork</li>
+
+<li>✔ Machine Washable</li>
+
+<li>✔ Available Sizes: S, M, L, XL</li>
+
+</ul>
+
+</div>
+
+<div class="shipping">
+
+<h2>Shipping & Returns</h2>
+
+<p>🚚 Free delivery on orders above ₹999</p>
+
+<p>🔄 7-day easy replacement</p>
+
+<p>📦 Secure packaging</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+/* Thumbnail Gallery */
+
+const mainImage=document.getElementById("mainImage");
+
+const thumbs=document.querySelectorAll(".thumb");
+
+thumbs.forEach(img=>{
+
+img.onclick=()=>{
+
+mainImage.src=img.src;
+
+thumbs.forEach(t=>t.classList.remove("active-thumb"));
+
+img.classList.add("active-thumb");
+
+};
+
+});
+
+/* Quantity */
+
+let quantity=1;
+
+document.getElementById("plus").onclick=()=>{
+
+quantity++;
+
+document.getElementById("qty").innerHTML=quantity;
+
+};
+
+document.getElementById("minus").onclick=()=>{
+
+if(quantity>1){
+
+quantity--;
+
+document.getElementById("qty").innerHTML=quantity;
+
+}
+
+};
+
+/* Wishlist */
+
+const wish=document.getElementById("wishlistBtn");
+
+wish.onclick=()=>{
+
+wish.innerHTML=
+
+wish.innerHTML.includes("🤍")
+
+?
+
+"❤️ Added to Wishlist"
+
+:
+
+"🤍 Add to Wishlist";
+
+};
+
+</script>
+
+</body>
+
+</html>
