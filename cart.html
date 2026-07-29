@@ -247,6 +247,127 @@ Proceed to Checkout
 </div>
 
 </div>
+<script>
+
+let cart = JSON.parse(localStorage.getItem("animeCart")) || [];
+
+const cartItems = document.getElementById("cartItems");
+const subtotal = document.getElementById("subtotal");
+const total = document.getElementById("total");
+const emptyCart = document.getElementById("emptyCart");
+
+function saveCart() {
+    localStorage.setItem("animeCart", JSON.stringify(cart));
+}
+
+function formatPrice(price){
+    return "₹" + Number(price).toLocaleString("en-IN");
+}
+
+function renderCart() {
+
+    cartItems.innerHTML = "";
+
+    if (cart.length === 0) {
+
+        emptyCart.style.display = "block";
+
+        subtotal.innerText = "₹0";
+        total.innerText = "₹0";
+
+        return;
+
+    }
+
+    emptyCart.style.display = "none";
+
+    let grandTotal = 0;
+
+    cart.forEach((item,index)=>{
+
+        if(!item.qty){
+            item.qty = 1;
+        }
+
+        const numericPrice = Number(
+            String(item.price).replace(/[^\d]/g,"")
+        );
+
+        grandTotal += numericPrice * item.qty;
+
+        cartItems.innerHTML += `
+
+        <div class="cart-item">
+
+            <img src="${item.image}" alt="${item.title}">
+
+            <div class="info">
+
+                <h3>${item.title}</h3>
+
+                <div class="price">
+                    ${formatPrice(numericPrice)}
+                </div>
+
+                <div class="qty">
+
+                    <button onclick="changeQty(${index},-1)">−</button>
+
+                    <span>${item.qty}</span>
+
+                    <button onclick="changeQty(${index},1)">+</button>
+
+                </div>
+
+                <button
+                class="remove"
+                onclick="removeItem(${index})">
+
+                Remove
+
+                </button>
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+    subtotal.innerText = formatPrice(grandTotal);
+
+    total.innerText = formatPrice(grandTotal);
+
+    saveCart();
+
+}
+
+function changeQty(index,value){
+
+    cart[index].qty += value;
+
+    if(cart[index].qty <= 0){
+
+        cart.splice(index,1);
+
+    }
+
+    renderCart();
+
+}
+
+function removeItem(index){
+
+    cart.splice(index,1);
+
+    renderCart();
+
+}
+
+renderCart();
+
+</script>
 
 </body>
 </html>
