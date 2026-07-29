@@ -369,5 +369,344 @@ renderCart();
 
 </script>
 
+<!-- ========================= -->
+<!-- EXTRA CART FEATURES -->
+<!-- ========================= -->
+
+<style>
+
+/* Coupon */
+
+.coupon-box{
+
+margin-top:25px;
+
+display:flex;
+
+gap:10px;
+
+flex-wrap:wrap;
+
+}
+
+.coupon-box input{
+
+flex:1;
+
+padding:12px;
+
+border:none;
+
+border-radius:30px;
+
+background:rgba(255,255,255,.08);
+
+color:white;
+
+outline:none;
+
+}
+
+.coupon-box button,
+.clear-cart{
+
+padding:12px 18px;
+
+border:none;
+
+border-radius:30px;
+
+cursor:pointer;
+
+font-weight:600;
+
+}
+
+.coupon-box button{
+
+background:linear-gradient(90deg,#00E5FF,#7B61FF);
+
+color:white;
+
+}
+
+.clear-cart{
+
+margin-top:20px;
+
+width:100%;
+
+background:#FF2D75;
+
+color:white;
+
+}
+
+.shipping{
+
+margin-top:25px;
+
+}
+
+.shipping select{
+
+width:100%;
+
+padding:12px;
+
+margin-top:10px;
+
+border:none;
+
+border-radius:30px;
+
+background:rgba(255,255,255,.08);
+
+color:white;
+
+}
+
+.message{
+
+margin-top:15px;
+
+color:#00ff99;
+
+font-weight:bold;
+
+}
+
+</style>
+
+<script>
+
+/* Add extra UI inside summary */
+
+document.querySelector(".summary").insertAdjacentHTML(
+
+"beforeend",
+
+`
+
+<div class="coupon-box">
+
+<input
+id="coupon"
+placeholder="Coupon Code">
+
+<button id="applyCoupon">
+
+Apply
+
+</button>
+
+</div>
+
+<div class="shipping">
+
+<label>Shipping</label>
+
+<select id="shipping">
+
+<option value="0">
+
+Free Shipping
+
+</option>
+
+<option value="99">
+
+Express Shipping (₹99)
+
+</option>
+
+</select>
+
+</div>
+
+<div id="couponMessage"
+
+class="message">
+
+</div>
+
+<button class="clear-cart">
+
+Clear Cart
+
+</button>
+
+`
+
+);
+
+let discount=0;
+
+document
+
+.getElementById("applyCoupon")
+
+.onclick=function(){
+
+const code=
+
+document
+
+.getElementById("coupon")
+
+.value
+
+.trim()
+
+.toUpperCase();
+
+if(code==="ANIME10"){
+
+discount=10;
+
+document
+
+.getElementById("couponMessage")
+
+.innerHTML=
+
+"🎉 10% discount applied!";
+
+}else if(code==="OTAKU20"){
+
+discount=20;
+
+document
+
+.getElementById("couponMessage")
+
+.innerHTML=
+
+"🔥 20% discount applied!";
+
+}else{
+
+discount=0;
+
+document
+
+.getElementById("couponMessage")
+
+.innerHTML=
+
+"❌ Invalid coupon.";
+
+}
+
+updateTotal();
+
+};
+
+document
+
+.getElementById("shipping")
+
+.onchange=updateTotal;
+
+function updateTotal(){
+
+let amount=0;
+
+cart.forEach(item=>{
+
+const price=
+
+Number(
+
+String(item.price)
+
+.replace(/[^\d]/g,"")
+
+);
+
+amount+=price*item.qty;
+
+});
+
+amount-=amount*(discount/100);
+
+amount+=Number(
+
+document
+
+.getElementById("shipping")
+
+.value
+
+);
+
+subtotal.innerText=
+
+"₹"+amount.toLocaleString("en-IN");
+
+total.innerText=
+
+"₹"+amount.toLocaleString("en-IN");
+
+}
+
+document
+
+.querySelector(".clear-cart")
+
+.onclick=function(){
+
+if(confirm("Clear your cart?")){
+
+cart=[];
+
+saveCart();
+
+renderCart();
+
+}
+
+};
+
+document
+
+.querySelector(".checkout")
+
+.onclick=function(){
+
+if(cart.length===0){
+
+alert("Your cart is empty.");
+
+return;
+
+}
+
+alert(
+
+"🎉 Redirecting to checkout!"
+
+);
+
+window.location.href=
+
+"checkout.html";
+
+};
+
+const oldRender=renderCart;
+
+renderCart=function(){
+
+oldRender();
+
+updateTotal();
+
+};
+
+renderCart();
+
+</script>
+
 </body>
 </html>
