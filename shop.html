@@ -338,6 +338,66 @@ font-size:38px;
 
 }
 
+/* Wishlist */
+
+.wishlist{
+
+position:absolute;
+
+top:15px;
+
+right:15px;
+
+width:42px;
+
+height:42px;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+border-radius:50%;
+
+background:rgba(0,0,0,.45);
+
+cursor:pointer;
+
+font-size:22px;
+
+transition:.3s;
+
+}
+
+.wishlist.active{
+
+background:#ff2d75;
+
+transform:scale(1.1);
+
+}
+
+.product.hidden{
+
+display:none;
+
+}
+
+.product:hover img{
+
+transform:scale(1.08);
+
+transition:.5s;
+
+}
+
+.product img{
+
+transition:.5s;
+
+}
+
 </style>
 
 </head>
@@ -426,7 +486,7 @@ id="search">
 
 <section class="products">
 
-<div class="product">
+<div class="product" data-category="Clothing" data-price="1999">
 
 <span class="tag">NEW</span>
 
@@ -468,7 +528,7 @@ Buy Now
 
 </div>
 
-<div class="product">
+<div class="product" data-category="Clothing" data-price="999">
 
 <span class="tag">HOT</span>
 
@@ -510,7 +570,7 @@ Buy Now
 
 </div>
 
-<div class="product">
+<div class="product" data-category="Figures" data-price="3499">
 
 <span class="tag">SALE</span>
 
@@ -552,7 +612,7 @@ Buy Now
 
 </div>
 
-<div class="product">
+<div class="product" data-category="Accessories" data-price="4299">
 
 <span class="tag">LIMITED</span>
 
@@ -595,6 +655,148 @@ Buy Now
 </div>
 
 </section>
+
+<script>
+
+const products=document.querySelectorAll(".product");
+
+/* Add Wishlist Button */
+
+products.forEach(product=>{
+
+const heart=document.createElement("div");
+
+heart.className="wishlist";
+
+heart.innerHTML="🤍";
+
+product.appendChild(heart);
+
+heart.onclick=()=>{
+
+heart.classList.toggle("active");
+
+heart.innerHTML=
+
+heart.classList.contains("active")
+
+?"❤️"
+
+:"🤍";
+
+};
+
+});
+
+/* Search */
+
+const search=document.getElementById("search");
+
+search.addEventListener("keyup",()=>{
+
+const value=search.value.toLowerCase();
+
+products.forEach(product=>{
+
+const name=
+
+product.querySelector("h3").innerText.toLowerCase();
+
+product.classList.toggle(
+
+"hidden",
+
+!name.includes(value)
+
+);
+
+});
+
+});
+
+/* Category Filter */
+
+const category=document.getElementById("category");
+
+category.addEventListener("change",()=>{
+
+const selected=category.value;
+
+products.forEach(product=>{
+
+if(
+
+selected==="All Categories"
+
+||
+
+product.dataset.category===selected
+
+){
+
+product.classList.remove("hidden");
+
+}else{
+
+product.classList.add("hidden");
+
+}
+
+});
+
+});
+
+/* Sort */
+
+const sort=document.getElementById("sort");
+
+sort.addEventListener("change",()=>{
+
+const container=document.querySelector(".products");
+
+const list=[...products];
+
+list.sort((a,b)=>{
+
+const pa=+a.dataset.price;
+
+const pb=+b.dataset.price;
+
+if(sort.value==="Price: Low to High") return pa-pb;
+
+if(sort.value==="Price: High to Low") return pb-pa;
+
+return 0;
+
+});
+
+list.forEach(item=>container.appendChild(item));
+
+});
+
+/* Add To Cart */
+
+document.querySelectorAll(".cart").forEach(button=>{
+
+button.onclick=()=>{
+
+button.innerHTML="✓ Added";
+
+button.style.background="#18b418";
+
+setTimeout(()=>{
+
+button.innerHTML="Add Cart";
+
+button.style.background="linear-gradient(90deg,#00E5FF,#7B61FF)";
+
+},1500);
+
+};
+
+});
+
+</script>
 
 </body>
 </html>
