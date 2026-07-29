@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE ANIME STORE</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+background:#050510;
+color:#fff;
+overflow-x:hidden;
+}
+
+/* Background */
+
+body::before{
+content:"";
+position:fixed;
+width:600px;
+height:600px;
+background:#6C63FF;
+filter:blur(180px);
+top:-200px;
+left:-150px;
+opacity:.25;
+z-index:-2;
+}
+
+body::after{
+content:"";
+position:fixed;
+width:500px;
+height:500px;
+background:#00E5FF;
+filter:blur(180px);
+bottom:-180px;
+right:-120px;
+opacity:.25;
+z-index:-2;
+}
+
+/* Navbar */
+
+nav{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+padding:20px 8%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+backdrop-filter:blur(18px);
+background:rgba(255,255,255,.05);
+border-bottom:1px solid rgba(255,255,255,.08);
+z-index:1000;
+}
+
+.logo{
+font-size:30px;
+font-weight:800;
+background:linear-gradient(90deg,#00E5FF,#7B61FF,#FF2D75);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+nav ul{
+display:flex;
+gap:35px;
+list-style:none;
+}
+
+nav ul li a{
+color:white;
+text-decoration:none;
+font-weight:500;
+transition:.3s;
+}
+
+nav ul li a:hover{
+color:#00E5FF;
+}
+
+.cart-btn{
+padding:12px 26px;
+border:none;
+border-radius:40px;
+background:linear-gradient(90deg,#00E5FF,#7B61FF);
+color:white;
+font-weight:600;
+cursor:pointer;
+transition:.3s;
+}
+
+.cart-btn:hover{
+transform:translateY(-3px);
+box-shadow:0 0 25px cyan;
+}
+
+/* Hero */
+
+.hero{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:20px;
+}
+
+.hero-content{
+max-width:900px;
+animation:fadeUp 1.5s ease;
+}
+
+.hero h1{
+font-size:70px;
+font-weight:800;
+line-height:1.1;
+}
+
+.hero h1 span{
+background:linear-gradient(90deg,#00E5FF,#7B61FF,#FF2D75);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.hero p{
+margin-top:25px;
+font-size:20px;
+color:#cfcfcf;
+line-height:1.8;
+}
+
+.buttons{
+margin-top:40px;
+display:flex;
+justify-content:center;
+gap:20px;
+flex-wrap:wrap;
+}
+
+.btn{
+padding:15px 35px;
+border-radius:50px;
+text-decoration:none;
+font-weight:600;
+transition:.3s;
+}
+
+.primary{
+background:linear-gradient(90deg,#00E5FF,#7B61FF);
+color:white;
+}
+
+.primary:hover{
+transform:translateY(-5px);
+box-shadow:0 0 30px cyan;
+}
+
+.secondary{
+border:2px solid #00E5FF;
+color:#00E5FF;
+}
+
+.secondary:hover{
+background:#00E5FF;
+color:black;
+}
+
+/* Floating Cards */
+
+.cards{
+display:flex;
+justify-content:center;
+gap:25px;
+flex-wrap:wrap;
+padding:80px 20px;
+}
+
+.card{
+width:260px;
+padding:25px;
+background:rgba(255,255,255,.05);
+border:1px solid rgba(255,255,255,.08);
+backdrop-filter:blur(20px);
+border-radius:20px;
+transition:.4s;
+}
+
+.card:hover{
+transform:translateY(-12px) scale(1.03);
+box-shadow:0 0 25px rgba(0,229,255,.35);
+}
+
+.card h2{
+margin-bottom:15px;
+}
+
+.card p{
+color:#cfcfcf;
+line-height:1.7;
+}
+
+@keyframes fadeUp{
+
+from{
+opacity:0;
+transform:translateY(80px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
+/* Mobile */
+
+@media(max-width:768px){
+
+nav ul{
+display:none;
+}
+
+.hero h1{
+font-size:45px;
+}
+
+.hero p{
+font-size:17px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav>
+
+<div class="logo">
+THE ANIME STORE
+</div>
+
+<ul>
+
+<li><a href="#">Home</a></li>
+
+<li><a href="#">Shop</a></li>
+
+<li><a href="#">Collections</a></li>
+
+<li><a href="#">Contact</a></li>
+
+</ul>
+
+<button class="cart-btn">
+🛒 Cart
+</button>
+
+</nav>
+
+<section class="hero">
+
+<div class="hero-content">
+
+<h1>
+
+ENTER THE WORLD OF
+
+<br>
+
+<span>ANIME</span>
+
+</h1>
+
+<p>
+
+Discover premium anime hoodies, manga, action figures,
+posters and exclusive collectibles with a luxury shopping experience.
+
+</p>
+
+<div class="buttons">
+
+<a href="#" class="btn primary">
+
+Explore Collection
+
+</a>
+
+<a href="#" class="btn secondary">
+
+Best Sellers
+
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="cards">
+
+<div class="card">
+
+<h2>🔥 Premium Quality</h2>
+
+<p>
+
+Authentic anime merchandise crafted with premium materials.
+
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>⚡ Fast Shipping</h2>
+
+<p>
+
+Quick delivery and secure packaging for every order.
+
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>💎 Exclusive Collection</h2>
+
+<p>
+
+Limited edition figures, hoodies, posters and accessories.
+
+</p>
+
+</div>
+
+</section>
+
+</body>
+</html>
