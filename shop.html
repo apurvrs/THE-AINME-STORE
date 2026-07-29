@@ -1009,27 +1009,7 @@ list.forEach(item=>container.appendChild(item));
 
 });
 
-/* Add To Cart */
 
-document.querySelectorAll(".cart").forEach(button=>{
-
-button.onclick=()=>{
-
-button.innerHTML="✓ Added";
-
-button.style.background="#18b418";
-
-setTimeout(()=>{
-
-button.innerHTML="Add Cart";
-
-button.style.background="linear-gradient(90deg,#00E5FF,#7B61FF)";
-
-},1500);
-
-};
-
-});
 
 </script>
 
@@ -1194,6 +1174,52 @@ card.style.transform="translateY(0)";
 });
 
 </script>
+</script>
+
+<script>
+
+document.querySelectorAll(".cart").forEach(button=>{
+
+button.onclick=function(){
+
+const product=this.closest(".product");
+
+const item={
+
+title:product.querySelector("h3").innerText,
+
+price:Number(product.querySelector(".price").innerText.replace(/[^\d]/g,"")),
+
+image:product.querySelector("img").src,
+
+qty:1
+
+};
+
+let cart=JSON.parse(localStorage.getItem("animeCart"))||[];
+
+const existing=cart.find(p=>p.title===item.title);
+
+if(existing){
+
+existing.qty++;
+
+}else{
+
+cart.push(item);
+
+}
+
+localStorage.setItem("animeCart",JSON.stringify(cart));
+
+alert("✅ Added to Cart!");
+
+};
+
+});
+
+</script>
+
 
 </body>
 </html>
