@@ -397,6 +397,81 @@ transform:scale(1.05);
 
 }
 
+  .viewer{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.95);
+justify-content:center;
+align-items:center;
+z-index:99999;
+}
+
+.viewer img{
+max-width:90%;
+max-height:90%;
+border-radius:20px;
+}
+
+#closeViewer{
+position:absolute;
+top:20px;
+right:30px;
+font-size:45px;
+cursor:pointer;
+color:white;
+}
+
+#loader{
+position:fixed;
+inset:0;
+background:#050510;
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:999999;
+transition:1s;
+}
+
+.loader-text{
+font-size:36px;
+font-weight:700;
+background:linear-gradient(90deg,#00E5FF,#7B61FF,#FF2D75);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+50%{
+transform:scale(1.05);
+}
+}
+
+#shareBtn{
+position:fixed;
+right:25px;
+bottom:25px;
+padding:14px 20px;
+border:none;
+border-radius:30px;
+background:linear-gradient(90deg,#00E5FF,#7B61FF);
+color:white;
+cursor:pointer;
+box-shadow:0 0 20px rgba(0,229,255,.4);
+}
+
+.reveal{
+opacity:0;
+transform:translateY(40px);
+transition:.8s;
+}
+
+.reveal.show{
+opacity:1;
+transform:translateY(0);
+}
+
 </style>
 
 </head>
@@ -618,6 +693,148 @@ wish.innerHTML.includes("🤍")
 };
 
 </script>
+  <!-- Image Viewer -->
+<div id="imageViewer" class="viewer">
+    <span id="closeViewer">&times;</span>
+    <img id="viewerImg" src="">
+</div>
+
+<!-- Loading Screen -->
+<div id="loader">
+    <div class="loader-text">THE ANIME STORE</div>
+</div>
+
+<!-- Floating Share Button -->
+<button id="shareBtn">📤 Share</button>
+  <script>
+
+/* Loading Screen */
+
+window.addEventListener("load",()=>{
+
+setTimeout(()=>{
+
+document.getElementById("loader").style.opacity="0";
+
+setTimeout(()=>{
+
+document.getElementById("loader").style.display="none";
+
+},800);
+
+},1200);
+
+});
+
+/* Full Image Viewer */
+
+const viewer=document.getElementById("imageViewer");
+const viewerImg=document.getElementById("viewerImg");
+
+mainImage.onclick=()=>{
+
+viewer.style.display="flex";
+viewerImg.src=mainImage.src;
+
+};
+
+document.getElementById("closeViewer").onclick=()=>{
+
+viewer.style.display="none";
+
+};
+
+viewer.onclick=(e)=>{
+
+if(e.target===viewer){
+
+viewer.style.display="none";
+
+}
+
+};
+
+/* Persistent Wishlist */
+
+wish.onclick=()=>{
+
+let wishlist=JSON.parse(localStorage.getItem("animeWishlist"))||[];
+
+const product={
+
+title:"Naruto Premium Hoodie",
+price:1999,
+image:mainImage.src
+
+};
+
+const exists=wishlist.find(item=>item.title===product.title);
+
+if(exists){
+
+wishlist=wishlist.filter(item=>item.title!==product.title);
+
+wish.innerHTML="🤍 Add to Wishlist";
+
+}else{
+
+wishlist.push(product);
+
+wish.innerHTML="❤️ Added to Wishlist";
+
+}
+
+localStorage.setItem("animeWishlist",JSON.stringify(wishlist));
+
+};
+
+/* Share */
+
+document.getElementById("shareBtn").onclick=()=>{
+
+if(navigator.share){
+
+navigator.share({
+
+title:"THE ANIME STORE",
+
+text:"Check out this anime product!",
+
+url:window.location.href
+
+});
+
+}else{
+
+navigator.clipboard.writeText(window.location.href);
+
+alert("Product link copied!");
+
+}
+
+};
+
+/* Scroll Reveal */
+
+document.querySelectorAll(".review-card,.related-card,.specs,.shipping")
+
+.forEach(el=>el.classList.add("reveal"));
+
+window.addEventListener("scroll",()=>{
+
+document.querySelectorAll(".reveal").forEach(el=>{
+
+if(el.getBoundingClientRect().top<window.innerHeight-80){
+
+el.classList.add("show");
+
+}
+
+});
+
+});
+
+  </script>
 
 </body>
 
